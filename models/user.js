@@ -1,14 +1,18 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var { Schema, model } = require('mongoose');
+const { customAlphabet } = require('nanoid');
 
-userSchema = new Schema( {
-	
-	unique_id: Number,
+const nanoid = customAlphabet(
+	'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+	12,
+);
+
+const userSchema = new Schema({
+	unique_id: { type: String, default: () => nanoid(), unique: true },
 	email: String,
 	username: String,
+	firstname: String,
+	lastname: String,
 	password: String,
-	passwordConf: String
-}),
-User = mongoose.model('User', userSchema);
-
-module.exports = User;
+	passwordConf: String,
+});
+module.exports = model('user', userSchema);
